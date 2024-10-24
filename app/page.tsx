@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/dialog";
 
 import PaperForm from '@/components/paperForm'
+import ResearchPaper from "@/components/ResearchPaper";
 
 export default function Home() {
   return (
@@ -28,6 +29,11 @@ export default function Home() {
           </DialogContent>
         </Dialog>
       </div>
+      <div>
+        <ResearchPaper/>
+      </div>
+
+
     </div>
   );
 }
