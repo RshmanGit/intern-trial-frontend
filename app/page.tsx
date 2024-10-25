@@ -10,6 +10,7 @@ import {
 
 import PaperForm from '@/components/paperForm'
 import ResearchPaper from "@/components/ResearchPaper";
+import CommentForm from "@/components/CommentFrom";
 
 export default function Home() {
   return (
@@ -32,8 +33,6 @@ export default function Home() {
       <div>
         <ResearchPaper/>
       </div>
-
-
     </div>
   );
 }
