@@ -11,7 +11,7 @@ import {
 import PaperForm from '@/components/paperForm'
 import ResearchPaper from "@/components/ResearchPaper";
 import CommentForm from "@/components/CommentFrom";
-
+import FetchPapers from '@/components/FecthPapers'
 export default function Home() {
   return (
     <div className="w-full">
@@ -29,9 +29,15 @@ export default function Home() {
             </DialogHeader>
           </DialogContent>
         </Dialog>
-      </div>
-      <div>
-        <ResearchPaper/>
+        <div>
+          {/* <FetchPapers /> */}
+          <ResearchPaper 
+          name="Exploring the Depths of Oceanography" 
+          description="A comprehensive review of oceanographic research and its significance." 
+          author="David Wilson"
+          />
+        </div>
+        
       </div>
     </div>
   );

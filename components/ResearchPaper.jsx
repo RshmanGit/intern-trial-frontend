@@ -19,26 +19,23 @@ import {
 import CommentCard from "./CommentCard";
 import CommentForm from "./CommentFrom";
 import ButtonGroup from "./ButtonGroup";
-const ResearchPaper = () => {
+const ResearchPaper = ({ name, description, author }) => {
+    console.log("Props received:", { name, description, author });
   return (
     <>
       <Card className="m-5">
-        <CardHeader>
-          <h2 className="text-lg font-semibold">Paper Title</h2>
-        </CardHeader>
-        <CardContent>
-          <p className="text-sm text-muted-foreground">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. In
-            vehicula, turpis et pretium scelerisque, mi metus lacinia nunc, in
-            ultrices felis odio sit amet elit.
-          </p>
-        </CardContent>
-        <CardFooter className="flex justify-between">
-          <p className="text-sm italic"> -Author Name </p>
-          <div>
-            <ButtonGroup></ButtonGroup>
-          </div>
-        </CardFooter>
+      <CardHeader>
+        <h2 className="text-lg font-semibold">{name}</h2> {/* Using name prop */}
+      </CardHeader>
+      <CardContent>
+        <p className="text-sm text-muted-foreground">{description}</p> {/* Using description prop */}
+      </CardContent>
+      <CardFooter className="flex justify-between">
+        <p className="text-sm italic"> - {author} </p> {/* Using author prop */}
+        <div>
+          <ButtonGroup />
+        </div>
+      </CardFooter>
         <div className="m-2">
           <Dialog>
             <DialogTrigger asChild>

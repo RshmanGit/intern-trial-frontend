@@ -7,7 +7,7 @@ const PaperForm = () => {
     paperName: "",
     paperDescription: ""
   });
-
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -15,9 +15,36 @@ const PaperForm = () => {
     });
   };
 
+  const handleSubmit = async (e) => {
+    e.preventDefault(); // Prevent default form submission
+    setIsSubmitting(true); // Set submitting state
+    try {
+      const response = await fetch("http://localhost:8000/api/v1/createResearchPaper", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData), // Send the form data as JSON
+      });
+
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+
+      const data = await response.json();
+      console.log("Success:", data);
+      // Optionally reset the form or show success message
+    } catch (error) {
+      console.error("Error:", error);
+    } finally {
+      setFormData({ authorName: "",paperName: "" ,paperDescription:""});
+      setIsSubmitting(false); // Reset submitting state
+    }
+  };
+
   return (
     <div className="p-6 space-y-4">
-      <form className="space-y-4">
+      <form className="space-y-4" onSubmit={handleSubmit}>
         {/* Author Name */}
         <div>
           <label className="block text-sm font-medium text-gray-700">Author Name</label>
@@ -59,10 +86,11 @@ const PaperForm = () => {
 
         <div className="mt-4">
           <button
-            type="submit"
+            type = "submit"
             className="w-full inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+            disabled={isSubmitting}
           >
-            Submit
+          {isSubmitting ? "Submitting..." : "Submit"}
           </button>
         </div>
       </form>

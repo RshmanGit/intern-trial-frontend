@@ -13,13 +13,32 @@ const CommentForm = () => {
       [e.target.name]: e.target.value,
     });
   };
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const handleSubmit = async (e) => {
+    e.preventDefault(); // Prevent default form submission
+    setIsSubmitting(true); // Set submitting state
+    try {
+      const response = await fetch("http://localhost:8000/api/v1/comment/:id", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData), // Send the form data as JSON
+      });
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (onSubmit) {
-      onSubmit(formData); // Pass the comment data to the parent component
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+
+      const data = await response.json();
+      console.log("Success:", data);
+      // Optionally reset the form or show success message
+    } catch (error) {
+      console.error("Error:", error);
+    } finally {
+      setFormData({ name: "", comment: "" });
+      setIsSubmitting(false); // Reset submitting state
     }
-    setFormData({ name: "", comment: "" }); // Clear the form after submission
   };
 
   return (
