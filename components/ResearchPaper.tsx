@@ -37,10 +37,7 @@ const ResearchPaper = () => {
             </Button>
                 </div>
             </CardFooter>
-            
-            
         </Card>
-
 </>
   )
 }
