@@ -12,7 +12,27 @@ import PaperForm from '@/components/paperForm'
 import ResearchPaper from "@/components/ResearchPaper";
 import CommentForm from "@/components/CommentFrom";
 import FetchPapers from '@/components/FecthPapers'
+import {papers} from "./data/papers";
+
 export default function Home() {
+  const renderPapers = () => {
+    return papers.map((paper) => {
+      return (
+        <ResearchPaper
+          key={paper.id}
+          id={paper.id}
+          title={paper.title}
+          author={paper.author}
+          views={paper.views}
+          likes={paper.likes}
+          dislikes={paper.dislikes}
+          numberOfComments={paper.numberOfComments}
+          description={paper.description}
+        />
+      );
+    });
+  }
+
   return (
     <div className="w-full">
       <div>
@@ -29,16 +49,14 @@ export default function Home() {
             </DialogHeader>
           </DialogContent>
         </Dialog>
-        <div>
-          {/* <FetchPapers /> */}
-          <ResearchPaper 
-          name="Exploring the Depths of Oceanography" 
-          description="A comprehensive review of oceanographic research and its significance." 
-          author="David Wilson"
-          />
-        </div>
+        
         
       </div>
+
+      <div>
+        {renderPapers()}
+      </div>
+
     </div>
   );
 }

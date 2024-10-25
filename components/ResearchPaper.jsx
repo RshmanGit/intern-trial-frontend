@@ -19,23 +19,25 @@ import {
 import CommentCard from "./CommentCard";
 import CommentForm from "./CommentFrom";
 import ButtonGroup from "./ButtonGroup";
-const ResearchPaper = ({ name, description, author }) => {
-    console.log("Props received:", { name, description, author });
+import Link from "next/link";
+const ResearchPaper = (paper) => {
   return (
     <>
       <Card className="m-5 p-4 shadow-lg rounded-lg bg-white">
-      <CardHeader>
-        <h2 className="text-lg md:text-xl font-semibold">{name}</h2> {/* Using name prop */}
-      </CardHeader>
-      <CardContent>
-        <p className="text-sm text-gray-600">{description}</p> {/* Using description prop */}
-      </CardContent>
-      <CardFooter className="flex justify-between items-center">
-        <p className="text-sm italic text-gray-500"> - {author} </p> {/* Using author prop */}
-        <div>
-          <ButtonGroup />
-        </div>
-      </CardFooter>
+        <Link href={`/research-paper/${paper.id}`}>
+        <CardHeader>
+          <h2 className="text-lg md:text-xl font-semibold">{paper.title}</h2> {/* Using name prop */}
+        </CardHeader>
+        <CardContent>
+          <p className="text-sm text-gray-600">{paper.description}</p> {/* Using description prop */}
+        </CardContent>
+        </Link>
+        <CardFooter className="flex justify-between items-center">
+          <p className="text-sm italic text-gray-500"> -{paper.author} </p> {/* Using author prop */}
+          <div>
+            <ButtonGroup views={paper.views} likes={paper.likes} numberOfComments={paper.numberOfComments} dislikes={paper.dislikes}/>
+          </div>
+        </CardFooter>
         <div className="m-2">
           <Dialog>
             <DialogTrigger asChild>
