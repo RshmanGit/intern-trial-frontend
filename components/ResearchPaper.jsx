@@ -23,7 +23,7 @@ import Link from "next/link";
 const ResearchPaper = (paper) => {
   return (
     <>
-      <Card className="m-5 p-4 shadow-lg rounded-lg bg-white">
+      <Card className="m-5 p-4 shadow-lg rounded-lg bg-white hover:custom-blue-shadow transition-shadow duration-300">
         <Link href={`/research-paper/${paper.id}`}>
         <CardHeader>
           <h2 className="text-lg md:text-xl font-semibold">{paper.title}</h2> {/* Using name prop */}
@@ -32,13 +32,12 @@ const ResearchPaper = (paper) => {
           <p className="text-sm text-gray-600">{paper.description}</p> {/* Using description prop */}
         </CardContent>
         </Link>
-        <CardFooter className="flex justify-between items-center">
-          <p className="text-sm italic text-gray-500"> -{paper.author} </p> {/* Using author prop */}
-          <div>
-            <ButtonGroup views={paper.views} likes={paper.likes} numberOfComments={paper.numberOfComments} dislikes={paper.dislikes}/>
-          </div>
+        <div>
+        <CardFooter>
+          <p className="text-sm italic text-gray-500 flex-1"> -{paper.author} </p> {/* Using author prop */}  
         </CardFooter>
-        <div className="m-2">
+        </div>
+        <div className="flex flex-col gap-4 md:flex-row md:justify-between mt-4">
           <Dialog>
             <DialogTrigger asChild>
               <Button className="w-full mt-4 sm:w-auto">Create comment</Button>
@@ -52,10 +51,17 @@ const ResearchPaper = (paper) => {
               </DialogHeader>
             </DialogContent>
           </Dialog>
+          <ButtonGroup 
+          views={paper.views} 
+          likes={paper.likes} 
+          numberOfComments={paper.numberOfComments} 
+          dislikes={paper.dislikes}
+          onLike={onLike}
+          onDislike={onDislike}
+          />
         </div>
       </Card>
     </>
   );
 };
-
 export default ResearchPaper;
