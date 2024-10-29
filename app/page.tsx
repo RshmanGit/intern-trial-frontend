@@ -17,13 +17,12 @@ import ResearchPaper from "@/components/ResearchPaper";
 
 // Define the ResearchPaper type
 interface ResearchPaper {
-  id: number; // or string based on your API
-  paperName: string;
-  authorName: string;
+  id: string; // or string based on your API
+  title: string;
+  author: string;
   views: number;
   likes: number;
   dislikes: number;
-  numberOfComments: number;
   description: string;
   comments: Array<any>;
 }
@@ -31,35 +30,36 @@ interface ResearchPaper {
 export default function Home() {
   // const [papers, setPapers] = useState<ResearchPaper[]>([]);
   const { papers,setPapers } = useResearchPaper();
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const socket: Socket = io("http://localhost:5000");
 
   useEffect(() => {
-    const fetchPapers = async () => {
-      try {
-        const response = await fetch(
-          "https://r4b85zv7-8000.inc1.devtunnels.ms/api/v1/researchPaper",
-          {
-            method: "GET",
-          }
-        );
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-        const data = await response.json();
-        setPapers(data); // Assuming data is an array of research papers
-      } catch (error) {
-        setError((error as Error).message); // Type assertion to extract message
-      } finally {
-        setLoading(false);
-      }
-    };
+  //   const fetchPapers = async () => {
+  //     try {
+  //       const response = await fetch(
+  //         "https://r4b85zv7-8000.inc1.devtunnels.ms/api/v1/researchPaper",
+  //         {
+  //           method: "GET",
+  //         }
+  //       );
+  //       if (!response.ok) {
+  //         throw new Error("Network response was not ok");
+  //       }
+  //       const data = await response.json();
+  //       setPapers(data); // Assuming data is an array of research papers
+  //     } catch (error) {
+  //       setError((error as Error).message); // Type assertion to extract message
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
 
-    fetchPapers();
+    // fetchPapers();
 
     // Set up the socket listener
     const handlePaperUpdated = (updatedPaper: ResearchPaper) => {
+      console.log("paper updated")
       setPapers((prevPapers) =>
         prevPapers.map((paper) =>
           paper.id === updatedPaper.id ? updatedPaper : paper
@@ -70,17 +70,18 @@ export default function Home() {
     socket.on("PaperUpdated", handlePaperUpdated);
 
     // Cleanup function
-    return () => {
-      socket.off("PaperUpdated", handlePaperUpdated);
-    };
+    // return () => {
+    //   socket.off("PaperUpdated", handlePaperUpdated);
+    // };
+    
   }, [papers]);
 
-  const handleLike = (paperId: number) => {
-    socket.emit("likePost", paperId);
+  const handleLike = (paperId: string) => {
+    // socket.emit("likePost", paperId);
   };
 
-  const handleDislike = (paperId: number) => {
-    socket.emit("dislikePost", paperId);
+  const handleDislike = (paperId: string) => {
+    // socket.emit("dislikePost", paperId);
   };
 
   if (loading) return <div>Loading...</div>;
@@ -91,12 +92,12 @@ export default function Home() {
       <ResearchPaper
         key={paper.id}
         id={paper.id}
-        title={paper.paperName}
-        author={paper.authorName}
+        title={paper.title}
+        author={paper.author}
         views={paper.views}
         likes={paper.likes}
         dislikes={paper.dislikes}
-        numberOfComments={paper.comments.length}
+        comments={paper.comments.length}
         description={paper.description}
         onLike={() => handleLike(paper.id)} // Pass down like handler
         onDislike={() => handleDislike(paper.id)}// Pass down dislike handler

@@ -18,7 +18,7 @@ const CommentForm = () => {
     e.preventDefault(); // Prevent default form submission
     setIsSubmitting(true); // Set submitting state
     try {
-      const response = await fetch("http://localhost:8000/api/v1/comment/:id", {
+      const response = await fetch("https://r4b85zv7-8000.inc1.devtunnels.ms/api/v1/comment/:id", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

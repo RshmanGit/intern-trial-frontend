@@ -7,7 +7,6 @@ import {
   CardHeader,
 } from "@/components/ui/card";
 import { Button } from "./ui/button";
-import { ThumbsUpIcon, ViewIcon } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -16,7 +15,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import CommentCard from "./CommentCard";
 import CommentForm from "./CommentFrom";
 import ButtonGroup from "./ButtonGroup";
 import Link from "next/link";
@@ -54,10 +52,10 @@ const ResearchPaper = (paper) => {
           <ButtonGroup 
           views={paper.views} 
           likes={paper.likes} 
-          numberOfComments={paper.numberOfComments} 
+          comments={paper.comments} 
           dislikes={paper.dislikes}
-          onLike={onLike}
-          onDislike={onDislike}
+          onLike={paper.onLike}
+          onDislike={paper.onDislike}
           />
         </div>
       </Card>

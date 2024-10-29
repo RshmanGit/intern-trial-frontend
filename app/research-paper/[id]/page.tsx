@@ -5,7 +5,10 @@ import { useResearchPaper } from '@/app/ResearchPaperContext';
 import ButtonGroup from '@/components/ButtonGroup';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
+
 import CommentForm from '@/components/CommentFrom';// Adjust the import path
+import { Card } from '@/components/ui/card';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 // interface ResearchPaper {
 //   id: string; // Adjust according to your actual API structure
 //   title: string;
@@ -16,6 +19,7 @@ import CommentForm from '@/components/CommentFrom';// Adjust the import path
 //   dislikes: number;
 //   comments: Array<any>;
 // }
+
 const Page = ({ params }: { params: { id: string } }) => {
   // const [paper, setPaper] = useState<ResearchPaper | null>(null);
   const { papers } = useResearchPaper();
@@ -52,34 +56,41 @@ const Page = ({ params }: { params: { id: string } }) => {
   // Handle loading and error states
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error fetching paper: {error}</div>;
-  const handleLike = (paperId: number) => {
+  const handleLike = (paperId: string) => {
     socket.emit("likePost", paperId);
   };
 
-  const handleDislike = (paperId: number) => {
+  const handleDislike = (paperId: string) => {
     socket.emit("dislikePost", paperId);
   };
   return (
     <>
-      <div className='m-3'>
-        <div className='flex justify-center text-xl'>
-          {paper?.paperName}
+      <Card className='m-3 flex flex-col p-3 gap-5'>
+        <div className='flex justify-center text-3xl text-wrap font-bold text-slate-800'>
+          {paper?.title}
         </div>
-        <div>
+        <div className='flex text-sm'>
+          <Avatar>
+  <AvatarImage src="#" />
+  <AvatarFallback>CN</AvatarFallback>
+</Avatar>
+{paper?.author}
+        </div>
+        <div className='text-wrap text-justify text-lg'>
           {paper?.description}
-        </div>
-        <div>
-          - {paper?.authorName} {/* Adjusted to match the JSON structure */}
         </div>
         <div>
           <ButtonGroup 
             views={paper?.views} 
             likes={paper?.likes} 
             dislikes={paper?.dislikes} 
-            numberOfComments={0} 
-            onLike={() => handleLike(paper.id)} // Pass the like handler
-            onDislike={() => handleDislike(paper.id)} // Pass the dislike handler// Use paper.comments.length for numberOfComments 
+            comments={0} 
+            onLike={() => handleLike(paper?.id)} // Pass the like handler
+            onDislike={() => handleDislike(paper?.id)} // Pass the dislike handler// Use paper.comments.length for comments 
           />
+        </div>
+        <div className='py-3'>
+          Comments : 
         </div>
         <Dialog>
           <DialogTrigger asChild>
@@ -94,7 +105,7 @@ const Page = ({ params }: { params: { id: string } }) => {
             </DialogHeader>
           </DialogContent>
         </Dialog>
-      </div>
+      </Card>
     </>
   );
 };

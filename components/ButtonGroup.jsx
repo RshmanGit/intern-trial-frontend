@@ -3,7 +3,7 @@ import { ThumbsDownIcon, ThumbsUpIcon, EyeIcon,MessageSquareCode } from "lucide-
 // Adjust the import based on your setup
 import { Button } from "@/components/ui/button";
 import {toast} from "sonner";
-const ButtonGroup = ({likes,dislikes,views,numberOfComments,onLike, onDislike}) => {
+const ButtonGroup = ({likes,dislikes,views,comments,onLike, onDislike}) => {
   return (
     <div className="grid grid-cols-2  gap-4 sm:flex flex-row justify-between mt-4 w-full sm:w-auto"> {/* Use Tailwind CSS for spacing */}
       {/* Thumbs Up Button */}
@@ -34,7 +34,7 @@ const ButtonGroup = ({likes,dislikes,views,numberOfComments,onLike, onDislike}) 
         {/* Comments Button */}
       <Button variant="outline" className="flex border border-black mb-4 md:mb-0">
         <MessageSquareCode size={16} />
-        <span className="ml-1">{numberOfComments}</span> {/* Display the comment count */}
+        <span className="ml-1">{comments}</span> {/* Display the comment count */}
       </Button>
     </div>
   );

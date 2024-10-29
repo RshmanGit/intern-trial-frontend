@@ -1,19 +1,18 @@
 // ResearchPaperContext.tsx
 'use client'
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useEffect, useState } from 'react';
+import {papers1} from './data/papers';
 
-interface ResearchPaper {
-  id: number;
-  paperName: string;
-  authorName: string;
+type ResearchPaper ={
+  id: string;
+  title: string;
+  author: string;
   views: number;
   likes: number;
   dislikes: number;
-  numberOfComments: number;
   description: string;
   comments: Array<any>;
 }
-
 interface ResearchPaperContextProps {
   papers: ResearchPaper[];
   setPapers: React.Dispatch<React.SetStateAction<ResearchPaper[]>>;
@@ -23,6 +22,12 @@ const ResearchPaperContext = createContext<ResearchPaperContextProps | undefined
 
 export const ResearchPaperProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [papers, setPapers] = useState<ResearchPaper[]>([]);
+  const dummyPapers = papers1;
+
+  useEffect(() => {
+    console.log(dummyPapers)
+    setPapers(dummyPapers)
+  },[])
   return (
     <ResearchPaperContext.Provider value={{ papers, setPapers }}>
       {children}

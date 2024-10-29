@@ -1,4 +1,14 @@
-export const papers = [
+export const papers1 = [
+    {
+      id:'10',
+      title: "Chinese Hackers Use CloudScout Toolset to Steal Session Cookies from Cloud Services",
+      author: "Ravie Lakshmanan",
+      views:4,
+      likes: 5,
+      dislikes: 1,
+      comments: [],
+      description: `A government entity and a religious organization in Taiwan were the target of a China-linked threat actor known as Evasive Panda that infected them with a previously undocumented post-compromise toolset codenamed CloudScout.`,
+    },
     {
       id:'1',
       title: "Paper 1",
@@ -6,7 +16,7 @@ export const papers = [
       views:4,
       likes: 5,
       dislikes: 1,
-      numberOfComments: 2,
+      comments: [],
       description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed sit amet accumsan arcu. Sed sit amet accumsan arcu. Sed sit amet accumsan arcu. Sed sit amet accumsan arcu.",
     },
     {
@@ -16,7 +26,7 @@ export const papers = [
       views:4,
       likes: 5,
       dislikes: 1,
-      numberOfComments: 2,
+      comments: [],
       description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed sit amet accumsan arcu. Sed sit amet accumsan arcu. Sed sit amet accumsan arcu. Sed sit amet accumsan arcu.",
     },
     {
@@ -26,7 +36,7 @@ export const papers = [
       views:4,
       likes: 5,
       dislikes: 1,
-      numberOfComments: 2,
+      comments: [],
       description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed sit amet accumsan arcu. Sed sit amet accumsan arcu. Sed sit amet accumsan arcu. Sed sit amet accumsan arcu.",
     },
     {
@@ -36,7 +46,7 @@ export const papers = [
       views:4,
       likes: 5,
       dislikes: 1,
-      numberOfComments: 2,
+      comments: [],
       description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed sit amet accumsan arcu. Sed sit amet accumsan arcu. Sed sit amet accumsan arcu. Sed sit amet accumsan arcu.",
     },
     {
@@ -46,7 +56,7 @@ export const papers = [
       views:4,
       likes: 5,
       dislikes: 1,
-      numberOfComments: 2,
+      comments: [],
       description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed sit amet accumsan arcu. Sed sit amet accumsan arcu. Sed sit amet accumsan arcu. Sed sit amet accumsan arcu.",
     },
     {
@@ -56,7 +66,7 @@ export const papers = [
       views:4,
       likes: 5,
       dislikes: 1,
-      numberOfComments: 2,
+      comments: [],
       description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed sit amet accumsan arcu. Sed sit amet accumsan arcu. Sed sit amet accumsan arcu. Sed sit amet accumsan arcu.",
     },
   ]
