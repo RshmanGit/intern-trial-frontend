@@ -14,7 +14,7 @@ body {
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
+    --background: 0 0% 98%;
     --foreground: 240 10% 3.9%;
     --card: 0 0% 100%;
     --card-foreground: 240 10% 3.9%;
@@ -77,10 +77,10 @@ body {
   }
 }
 
-.custom-blue-shadow {
-  box-shadow: 0 10px 15px rgba(0, 0, 139, 0.5);
+.custom-grey-shadow {
+  box-shadow: 0 2px 5px rgba(59, 59, 79, 0.5);
 }
 
-.hover\:custom-blue-shadow:hover {
-  box-shadow: 0 10px 15px rgba(0, 0, 139, 0.5);
+.hover\:custom-grey-shadow:hover {
+  box-shadow: 0 2px 5px rgba(59, 59, 79, 0.5);
 }

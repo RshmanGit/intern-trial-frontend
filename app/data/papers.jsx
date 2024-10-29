@@ -6,8 +6,8 @@ export const papers1 = [
       views:4,
       likes: 5,
       dislikes: 1,
-      comments: [],
-      description: `A government entity and a religious organization in Taiwan were the target of a China-linked threat actor known as Evasive Panda that infected them with a previously undocumented post-compromise toolset codenamed CloudScout.`,
+      comments: [{name:'sagar',text:'awesome'}, {name:'anonymous',text:'great article'}, {name:'abhishek',text:'great work'}],
+      description: `A government entity and a religious organization in Taiwan were the target of a China-linked threat actor known as Evasive Panda that infected them with a previously undocumented post-compromise toolset codenamed CloudScout. A government entity and a religious organization in Taiwan were the target of a China-linked threat actor known as Evasive Panda that infected them with a previously undocumented post-compromise toolset codenamed CloudScout.`,
     },
     {
       id:'1',

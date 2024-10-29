@@ -2,7 +2,7 @@
 import { Button } from "@/components/ui/button";
 import { io, Socket } from "socket.io-client";
 import React, { useEffect, useState } from "react";
-import { useResearchPaper } from '@/app/ResearchPaperContext';
+import { useResearchPaper } from "@/app/ResearchPaperContext";
 import {
   Dialog,
   DialogContent,
@@ -14,6 +14,7 @@ import {
 
 import PaperForm from "@/components/paperForm";
 import ResearchPaper from "@/components/ResearchPaper";
+import { PenIcon } from "lucide-react";
 
 // Define the ResearchPaper type
 interface ResearchPaper {
@@ -28,40 +29,16 @@ interface ResearchPaper {
 }
 
 export default function Home() {
-  // const [papers, setPapers] = useState<ResearchPaper[]>([]);
-  const { papers,setPapers } = useResearchPaper();
+  const { papers, setPapers } = useResearchPaper();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const socket: Socket = io(`${
-    process.env.NEXT_PUBLIC_SOCKET_URL
-  }`);
+  const socket: Socket = io(`${process.env.NEXT_PUBLIC_SOCKET_URL}`);
 
   useEffect(() => {
-  //   const fetchPapers = async () => {
-  //     try {
-  //       const response = await fetch(
-  //         "https://r4b85zv7-8000.inc1.devtunnels.ms/api/v1/researchPaper",
-  //         {
-  //           method: "GET",
-  //         }
-  //       );
-  //       if (!response.ok) {
-  //         throw new Error("Network response was not ok");
-  //       }
-  //       const data = await response.json();
-  //       setPapers(data); // Assuming data is an array of research papers
-  //     } catch (error) {
-  //       setError((error as Error).message); // Type assertion to extract message
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   };
-
-    // fetchPapers();
 
     // Set up the socket listener
     const handlePaperUpdated = (updatedPaper: ResearchPaper) => {
-      console.log("paper updated")
+      console.log("paper updated");
       setPapers((prevPapers) =>
         prevPapers.map((paper) =>
           paper.id === updatedPaper.id ? updatedPaper : paper
@@ -75,7 +52,6 @@ export default function Home() {
     // return () => {
     //   socket.off("PaperUpdated", handlePaperUpdated);
     // };
-    
   }, [papers]);
 
   const handleLike = (paperId: string) => {
@@ -91,44 +67,47 @@ export default function Home() {
 
   const renderPapers = () => {
     return papers.map((paper) => (
-      <ResearchPaper
-        key={paper.id}
-        id={paper.id}
-        title={paper.title}
-        author={paper.author}
-        views={paper.views}
-        likes={paper.likes}
-        dislikes={paper.dislikes}
-        comments={paper.comments.length}
-        description={paper.description}
-        onLike={() => handleLike(paper.id)} // Pass down like handler
-        onDislike={() => handleDislike(paper.id)}// Pass down dislike handler
-      />
+      <div key={paper.id} className="sm:w-2/3 w-4/5 self-center">
+        <ResearchPaper
+          id={paper.id}
+          title={paper.title}
+          author={paper.author}
+          views={paper.views}
+          likes={paper.likes}
+          dislikes={paper.dislikes}
+          comments={paper.comments.length}
+          description={paper.description}
+          onLike={() => handleLike(paper.id)} // Pass down like handler
+          onDislike={() => handleDislike(paper.id)} // Pass down dislike handler
+        />
+      </div>
     ));
   };
 
   return (
-    <div className="w-full">
+    <div className="w-full m-5">
       <div>
-        <h1 className="text-center text-3xl m-5">What's HOT</h1>
+        <h1 className="text-center text-3xl m-5">What&apos;s HOT</h1>
 
         <div className="flex justify-center p-4 sm:justify-end">
-          <Dialog>
-            <DialogTrigger asChild>
-              <Button>Create paper</Button>
-            </DialogTrigger>
-            <DialogContent>
-              <DialogHeader>
-                <DialogTitle>Fill paper details</DialogTitle>
-                <DialogDescription>
-                  <PaperForm />
-                </DialogDescription>
-              </DialogHeader>
-            </DialogContent>
-          </Dialog>
+          <div className="fixed bottom-10 right-10">
+            <Dialog>
+              <DialogTrigger asChild>
+                <Button className="gap-4 px-8 py-8 rounded-2xl"><PenIcon size={16} />Create paper</Button>
+              </DialogTrigger>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>Fill paper details</DialogTitle>
+                  <DialogDescription>
+                    <PaperForm />
+                  </DialogDescription>
+                </DialogHeader>
+              </DialogContent>
+            </Dialog>
+          </div>
         </div>
       </div>
-      <div>{renderPapers()}</div>
+      <div className="flex flex-col gap-6">{renderPapers()}</div>
     </div>
   );
 }
