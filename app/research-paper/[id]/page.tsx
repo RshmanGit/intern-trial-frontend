@@ -69,11 +69,8 @@ const Page = ({ params }: { params: { id: string } }) => {
         <div className='flex justify-center text-3xl text-wrap font-bold text-slate-800'>
           {paper?.title}
         </div>
-        <div className='flex text-sm'>
-          <Avatar>
-  <AvatarImage src="#" />
-  <AvatarFallback>CN</AvatarFallback>
-</Avatar>
+        <div className='flex text-sm justify-self'>
+          
 {paper?.author}
         </div>
         <div className='text-wrap text-justify text-lg'>
@@ -90,7 +87,7 @@ const Page = ({ params }: { params: { id: string } }) => {
           />
         </div>
         <div className='py-3'>
-          Comments : 
+          Comments : {paper?.comments.length}
         </div>
         <Dialog>
           <DialogTrigger asChild>

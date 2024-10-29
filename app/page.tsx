@@ -32,7 +32,9 @@ export default function Home() {
   const { papers,setPapers } = useResearchPaper();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const socket: Socket = io("http://localhost:5000");
+  const socket: Socket = io(`${
+    process.env.NEXT_PUBLIC_SOCKET_URL
+  }`);
 
   useEffect(() => {
   //   const fetchPapers = async () => {
@@ -108,7 +110,7 @@ export default function Home() {
   return (
     <div className="w-full">
       <div>
-        <h1 className="text-center m-5">Conference Papers</h1>
+        <h1 className="text-center text-3xl m-5">What's HOT</h1>
 
         <div className="flex justify-center p-4 sm:justify-end">
           <Dialog>
