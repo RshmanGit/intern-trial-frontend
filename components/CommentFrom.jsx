@@ -1,10 +1,10 @@
 'use client'
 import React, { useState } from "react";
 
-const CommentForm = () => {
+const CommentForm = ({ paperId }) => {
   const [formData, setFormData] = useState({
     name: "",
-    comment: ""
+    content: ""
   });
 
   const handleChange = (e) => {
@@ -16,9 +16,10 @@ const CommentForm = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const handleSubmit = async (e) => {
     e.preventDefault(); // Prevent default form submission
+    console.log(formData);
     setIsSubmitting(true); // Set submitting state
     try {
-      const response = await fetch("http://localhost:8000/api/v1/comment/:id", {
+      const response = await fetch(`http://localhost:8000/api/v1/paper/${paperId}/comment`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -36,7 +37,7 @@ const CommentForm = () => {
     } catch (error) {
       console.error("Error:", error);
     } finally {
-      setFormData({ name: "", comment: "" });
+      setFormData({ name: "", content: "" });
       setIsSubmitting(false); // Reset submitting state
     }
   };
@@ -62,8 +63,8 @@ const CommentForm = () => {
         <div>
           <label className="block text-sm font-medium text-gray-700">when you are attending </label>
           <textarea
-            name="comment"
-            value={formData.comment}
+            name="content"
+            value={formData.content}
             onChange={handleChange}
             className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
             rows="4"

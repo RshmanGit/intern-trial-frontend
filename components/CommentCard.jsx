@@ -1,6 +1,4 @@
 import { Card} from "@/components/ui/card";
-import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/card";
-
 export default function CommentCard({ name, comment }) {
   return (
     <Card className="m-5 p-4 shadow-lg rounded-lg bg-white sm:p-6 lg:p-84">

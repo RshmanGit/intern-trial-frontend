@@ -23,16 +23,19 @@ interface ResearchPaper {
   dislikes: number;
   numberOfComments: number;
   description: string;
-  comments: Array<any>;
+  comments: Comment[];
   onLike: (id: number) => void;
   onDislike: (id: number) => void;
 }
 export default function Home() {
+  
   const [papers, setPapers] = useState<ResearchPaper[]>([]);
   // const { papers,setPapers } = useResearchPaper();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const socket = io("ws://localhost:8000");
+  console.log("hiiii");
+  
   useEffect(() => {
     const fetchPapers = async () => {
       try {
@@ -103,7 +106,7 @@ export default function Home() {
         views={paper.views}
         likes={paper.likes}
         dislikes={paper.dislikes}
-        numberOfComments={paper.comments.length}
+        numberOfComments={paper.comments?.length || 0}
         description={paper.description}
         onLike={handleLike}
         onDislike={handleDislike}
@@ -115,7 +118,7 @@ export default function Home() {
     <div className="w-full">
       <div>
         <h1 className="text-center text-3xl m-5">Conference Papers</h1>
-
+        
         <div className="flex flex-row fixed bottom-10 right-10">
           <Dialog>
             <DialogTrigger asChild>

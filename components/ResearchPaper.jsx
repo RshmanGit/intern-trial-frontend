@@ -57,19 +57,6 @@ const ResearchPaper = ({
           </CardFooter>
         </div>
         <div className="flex flex-col gap-4 md:flex-row md:justify-between mt-4">
-          <Dialog>
-            <DialogTrigger asChild>
-              <Button className="w-full mt-4 sm:w-auto">Create comment</Button>
-            </DialogTrigger>
-            <DialogContent>
-              <DialogHeader>
-                <DialogTitle>Comment</DialogTitle>
-                <DialogDescription>
-                  <CommentForm />
-                </DialogDescription>
-              </DialogHeader>
-            </DialogContent>
-          </Dialog>
           <div className="grid grid-cols-2  gap-4 sm:flex flex-row justify-between mt-4 w-full sm:w-auto">
             <Button
               variant={"ghost"}

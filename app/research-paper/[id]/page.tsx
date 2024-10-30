@@ -9,10 +9,10 @@ import {
 } from "lucide-react";
 import { useResearchPaper } from '@/app/ResearchPaperContext';
 import { toast } from "sonner";
-// import ButtonGroup from '@/components/ButtonGroup';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
-import CommentForm from '@/components/CommentFrom';// Adjust the import path
+import CommentForm from '@/components/CommentFrom';
+import CommentCard from '@/components/CommentCard';// Adjust the import path
 interface ResearchPaper {
   id: string; // Adjust according to your actual API structure
   title: string;
@@ -21,13 +21,20 @@ interface ResearchPaper {
   views: number;
   likes: number;
   dislikes: number;
-  comments: Array<any>;
+  comments: Comment[];
+}
+interface Comment {
+  id: string;
+  name: string;
+  content: string;
+  createdAt: string; // Add any other properties you want to display
 }
 const Page = ({ params }: { params: { id: string } }) => {
-  const [papers, setPapers] = useState<ResearchPaper[] | null>(null);
+  const [papers, setPapers] = useState<ResearchPaper[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null); 
-  // const socket: Socket = io("http://localhost:5000");
+  const [comments, setComments] = useState<Comment[]>([]);
+  const socket: Socket = io("http://localhost:8000");
 
   
   useEffect(() => {
@@ -49,26 +56,70 @@ const Page = ({ params }: { params: { id: string } }) => {
         setLoading(false);
       }
     };
+    const fetchComments = async () => {
+      try {
+        const response = await fetch(`http://localhost:8000/api/v1/paper/${params.id}/comment`, {
+          method: 'GET',
+        });
 
+        if (!response.ok) {
+          throw new Error('Failed to fetch comments');
+        }
+
+        const commentsData: Comment[] = await response.json();
+        setComments(commentsData);
+      } catch (error) {
+        console.error("Error fetching comments:", error);
+        setError((error as Error).message);
+      }
+    };
     fetchPapers();
-  }, []); // Dependency array includes params.id to refetch when it changes
-
-  // Handle loading and error states
+    fetchComments();
+    const handleNewPaperCreated = (newPaper: ResearchPaper) => {
+      setPapers((prevPapers) => {
+        const paperExists = prevPapers.some(
+          (paper) => paper.id === newPaper.id
+        );
+        if (paperExists) {
+          return prevPapers.map((paper) =>
+            paper.id === newPaper.id ? newPaper : paper
+          );
+        } 
+        else {
+          return [...prevPapers, newPaper];
+        }
+      });
+      fetchPapers();
+    };
+    const handleNewCommentCreated = (newComment: Comment) => {
+      setComments((prevComments) => [...prevComments, newComment]);
+      fetchComments();
+    };
+    socket.on("commentCreated", handleNewCommentCreated);
+    socket.on("postupdated", handleNewPaperCreated);
+    return () => {
+      socket.off("postupdated");
+      socket.off("commentCreated", handleNewCommentCreated);
+    };
+    
+  }, []);
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error fetching papers: {error}</div>;
 
   const paper = papers?.find((p: ResearchPaper) => p.id.toString() === params.id);
+  console.log(paper);
   if (!paper) return <div>Paper not found</div>;
 
 
-  const handleLike = (paperId: number) => {
-    // socket.emit("likePost", paperId);
+  const handleLike = (paperId: string) => {
+    socket.emit("likePaper", paperId);
   };
 
-  const handleDislike = (paperId: number) => {
-    // socket.emit("dislikePost", paperId);
+  const handleDislike = (paperId: string) => {
+    socket.emit("dislikePaper", paperId);
   };
+
   return (
     <>
       <div className='m-3'>
@@ -79,7 +130,7 @@ const Page = ({ params }: { params: { id: string } }) => {
           {paper?.description}
         </div>
         <div>
-          - {paper?.authorName} {/* Adjusted to match the JSON structure */}
+          - {paper?.authorName}
         </div>
         <div>
         <div className="grid grid-cols-2  gap-4 sm:flex flex-row justify-between mt-4 w-full sm:w-auto">
@@ -88,7 +139,7 @@ const Page = ({ params }: { params: { id: string } }) => {
               className="flex border border-black mb-4 md:mb-0 gap-1 transform transition-transform duration-200 hover:scale-125"
               
               onClick={() => {
-                // onLike(id)
+                handleLike(paper.id)
                 toast.info("You liked!", {
                   duration: 1000,
                   position: "top-right",
@@ -96,7 +147,7 @@ const Page = ({ params }: { params: { id: string } }) => {
               }}
             >
               <ThumbsUpIcon size={16} />
-              <span className="ml-1">{0}</span> {/* Display the count */}
+              <span className="ml-1">{paper?.likes}</span> {/* Display the count */}
             </Button>
 
             {/* Thumbs Down Button */}
@@ -104,7 +155,7 @@ const Page = ({ params }: { params: { id: string } }) => {
                variant={"ghost"}
               className="flex border border-black mb-4 md:mb-0 gap-1 transform transition-transform duration-200 hover:scale-125"
               onClick={() => {
-                // onDislike(id)
+                handleDislike(paper.id)
                 toast.info("you disliked!", {
                   duration: 1000,
                   position: "top-right",
@@ -112,7 +163,7 @@ const Page = ({ params }: { params: { id: string } }) => {
               }}
             >
               <ThumbsDownIcon size={16} />
-              <span className="ml-1">{0}</span> {/* Display the count */}
+              <span className="ml-1">{paper.dislikes}</span> {/* Display the count */}
             </Button>
 
             {/* views Button */}
@@ -121,7 +172,7 @@ const Page = ({ params }: { params: { id: string } }) => {
               className="flex border border-black mb-4 md:mb-0 gap-1 transform transition-transform duration-200 hover:scale-125"
             >
               <EyeIcon size={16} />
-              <span className="ml-1">{0}</span>
+              <span className="ml-1">{paper.views}</span>
               {/* Display the comment count */}
             </Button>
 
@@ -131,11 +182,21 @@ const Page = ({ params }: { params: { id: string } }) => {
               className="flex border border-black mb-4 md:mb-0 gap-1 transform transition-transform duration-200 hover:scale-125"
             >
               <MessageSquareCode size={16} />
-              <span className="ml-1">{0}</span>{" "}
+              <span className="ml-1">{comments.length}</span>{" "}
               {/* Display the comment count */}
             </Button>
           </div>
         </div>
+        <div className="mt-6">
+        <h2 className="text-lg font-bold">Comments</h2>
+        {comments.length > 0 ? (
+          comments.map((comment) => (
+            <CommentCard key={comment.id} name={comment.name} comment={comment.content} />
+          ))
+        ) : (
+          <p>No comments yet.</p>
+        )}
+      </div>
         <Dialog>
           <DialogTrigger asChild>
             <Button className="w-full mt-4 sm:w-auto">Create comment</Button>
@@ -144,11 +205,12 @@ const Page = ({ params }: { params: { id: string } }) => {
             <DialogHeader>
               <DialogTitle>Comment</DialogTitle>
               <DialogDescription>
-                <CommentForm />
+                <CommentForm paperId={paper.id}/>
               </DialogDescription>
             </DialogHeader>
           </DialogContent>
         </Dialog>
+
       </div>
     </>
   );
