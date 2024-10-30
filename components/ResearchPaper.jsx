@@ -15,18 +15,7 @@ import {
 } from "@/components/ui/card";
 import { Button } from "./ui/button";
 import Link from "next/link";
-const ResearchPaper = ({
-  id,
-  title,
-  author,
-  views,
-  likes,
-  dislikes,
-  numberOfComments,
-  description,
-  onLike,
-  onDislike,
-}) => {
+
 import EngagementPanel from "./EngagementPanel";
 import {
   ThumbsUpIcon,
@@ -35,7 +24,16 @@ import {
   Eye,
 } from "lucide-react";
 
-const ResearchPaper = (paper) => {
+const ResearchPaper = ({  id,
+  title,
+  author,
+  views,
+  likes,
+  dislikes,
+  numberOfComments,
+  description,
+  onLike,
+  onDislike,}) => {
   return (
     <>
       <Card className="m-5 p-4 shadow-lg rounded-lg bg-white hover:custom-blue-shadow transition-shadow duration-300 max-w-[60%] mx-auto">
@@ -52,7 +50,7 @@ const ResearchPaper = (paper) => {
         </Link>
         <CardFooter>
           <div>
-          <div className="flex gap-2  items-center">
+          <div className="grid grid-cols-2  gap-4 sm:flex flex-row justify-between mt-4 w-full sm:w-auto">
       <Button
         size={"icon"}
         variant={"ghost"}
@@ -72,7 +70,7 @@ const ResearchPaper = (paper) => {
       <Button
         size={"icon"}
         variant={"ghost"}
-        className="transform transition-transform duration-200 hover:scale-125 grid grid-cols-2  gap-4 sm:flex flex-row justify-between mt-4 w-full sm:w-auto"
+        className="transform transition-transform duration-200 hover:scale-125 "
       >
         <MessageCircleMoreIcon size={16} />
         {paper.comments}

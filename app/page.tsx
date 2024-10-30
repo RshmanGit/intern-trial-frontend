@@ -121,9 +121,9 @@ export default function Home() {
           <div className="fixed bottom-10 right-10">
             <Dialog>
               <DialogTrigger asChild>
-                <Button className="gap-4 px-8 py-8 rounded-2xl"><PenIcon size={16} / className="gap-4 px-8 py-8 rounded-2xl">
-                <PenIcon size={16} />
+                <Button className="gap-4 px-8 py-8 rounded-2xl">
                 Create paper
+                  <PenIcon size={16} className="gap-4 px-8 py-8 rounded-2xl"/>
               </Button>
               </DialogTrigger>
               <DialogContent>

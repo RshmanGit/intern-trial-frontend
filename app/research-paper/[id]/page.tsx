@@ -6,6 +6,8 @@ import {
   ThumbsUpIcon,
   EyeIcon,
   MessageSquareCode,
+  MessageCircleMoreIcon,
+  Eye,
 } from "lucide-react";
 import { useResearchPaper } from '@/app/ResearchPaperContext';
 import { toast } from "sonner";
@@ -75,7 +77,7 @@ const Page = ({ params }: { params: { id: string } }) => {
       <div className="flex flex-col gap-4 w-4/5 sm:w-2/3 bg-white p-5 shadow h-full">
         <div className='flex flex-col gap-2'>
           <h2 className="text-lg md:text-4xl font-semibold">{paper.title}</h2>
-          <p className="text-md italic text-gray-500">{paper.author}</p>
+          <p className="text-md italic text-gray-500">{paper.authorName}</p>
         </div>
         
         <div>

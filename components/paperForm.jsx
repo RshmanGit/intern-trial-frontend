@@ -6,7 +6,6 @@ const PaperForm = () => {
     authorName: "",
     paperName: "",
     description: ""
-    description: ""
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const handleChange = (e) => {
@@ -79,8 +78,6 @@ const PaperForm = () => {
         <div>
           <label className="block text-sm font-medium text-gray-700">Paper Description</label>
           <textarea
-            name="description"
-            value={formData.description}
             name="description"
             value={formData.description}
             onChange={handleChange}
