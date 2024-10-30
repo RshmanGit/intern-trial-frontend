@@ -1,33 +1,48 @@
 'use client'
 import React, { useEffect, useState } from 'react';
 import { io, Socket } from "socket.io-client";
+import {
+  ThumbsDownIcon,
+  ThumbsUpIcon,
+  EyeIcon,
+  MessageSquareCode,
+} from "lucide-react";
 import { useResearchPaper } from '@/app/ResearchPaperContext';
+import { toast } from "sonner";
+// import ButtonGroup from '@/components/ButtonGroup';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
-import CommentForm from '@/components/CommentFrom';
-import { ThumbsUpIcon, ThumbsDownIcon, MessageCircleMoreIcon, Eye } from 'lucide-react';
-// import { Button } from "./ui/button";
-type Engagements= {
+import CommentForm from '@/components/CommentFrom';// Adjust the import path
+interface ResearchPaper {
+  id: string; // Adjust according to your actual API structure
+  title: string;
+  description: string;
+  authorName: string; // Use the correct key based on your API response
   views: number;
   likes: number;
   dislikes: number;
-  comments: number;
-  onLike: () => void;
-  onDislike: () => void;
+  comments: Array<any>;
 }
 const Page = ({ params }: { params: { id: string } }) => {
-  const { papers } = useResearchPaper();
-  const paper = papers.find(p => p.id.toString() === params.id); 
-  if (!paper) return <div>Paper not found</div>;
-
+  const [papers, setPapers] = useState<ResearchPaper[] | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null); 
-  const socket: Socket = io("http://localhost:5000");
+  // const socket: Socket = io("http://localhost:5000");
 
+  
   useEffect(() => {
-    const fetchPaper = async () => {
+    const fetchPapers = async () => {
       try {
-        // Simulate fetch and populate `paper` data if not found in context
+        const response = await fetch(`http://localhost:8000/api/v1/paper`, {
+          method: 'GET',
+        });
+
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+
+        const data: ResearchPaper[] = await response.json();
+        setPapers(data);
       } catch (error) {
         setError((error as Error).message);
       } finally {
@@ -35,18 +50,24 @@ const Page = ({ params }: { params: { id: string } }) => {
       }
     };
 
-    fetchPaper();
-  }, [params.id]);
+    fetchPapers();
+  }, []); // Dependency array includes params.id to refetch when it changes
+
+  // Handle loading and error states
 
   if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error fetching paper: {error}</div>;
+  if (error) return <div>Error fetching papers: {error}</div>;
 
-  const handleLike = (paperId: string) => {
-    socket.emit("likePost", paperId);
+  const paper = papers?.find((p: ResearchPaper) => p.id.toString() === params.id);
+  if (!paper) return <div>Paper not found</div>;
+
+
+  const handleLike = (paperId: number) => {
+    // socket.emit("likePost", paperId);
   };
 
-  const handleDislike = (paperId: string) => {
-    socket.emit("dislikePost", paperId);
+  const handleDislike = (paperId: number) => {
+    // socket.emit("dislikePost", paperId);
   };
 
   return (
