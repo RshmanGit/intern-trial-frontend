@@ -5,7 +5,7 @@ const PaperForm = () => {
   const [formData, setFormData] = useState({
     authorName: "",
     paperName: "",
-    paperDescription: ""
+    description: ""
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const handleChange = (e) => {
@@ -19,7 +19,7 @@ const PaperForm = () => {
     e.preventDefault(); // Prevent default form submission
     setIsSubmitting(true); // Set submitting state
     try {
-      const response = await fetch("http://localhost:8000/api/v1/createResearchPaper", {
+      const response = await fetch("http://localhost:8000/api/v1/paper", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -37,7 +37,7 @@ const PaperForm = () => {
     } catch (error) {
       console.error("Error:", error);
     } finally {
-      setFormData({ authorName: "",paperName: "" ,paperDescription:""});
+      setFormData({ authorName: "",paperName: "" ,description:""});
       setIsSubmitting(false); // Reset submitting state
     }
   };
@@ -53,6 +53,7 @@ const PaperForm = () => {
             name="authorName"
             value={formData.authorName}
             onChange={handleChange}
+            autoComplete="off"
             className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
             placeholder="Enter author's name"
           />
@@ -66,6 +67,7 @@ const PaperForm = () => {
             name="paperName"
             value={formData.paperName}
             onChange={handleChange}
+            autoComplete="off"
             className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
             placeholder="Enter paper name"
           />
@@ -75,9 +77,10 @@ const PaperForm = () => {
         <div>
           <label className="block text-sm font-medium text-gray-700">Paper Description</label>
           <textarea
-            name="paperDescription"
-            value={formData.paperDescription}
+            name="description"
+            value={formData.description}
             onChange={handleChange}
+            autoComplete="off"
             className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
             rows="4"
             placeholder="Enter paper description"

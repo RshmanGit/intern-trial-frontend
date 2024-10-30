@@ -2,7 +2,7 @@
 import { Button } from "@/components/ui/button";
 import { io, Socket } from "socket.io-client";
 import React, { useEffect, useState } from "react";
-import { useResearchPaper } from '@/app/ResearchPaperContext';
+import { useResearchPaper } from "@/app/ResearchPaperContext";
 import {
   Dialog,
   DialogContent,
@@ -11,13 +11,11 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-
+import { PenIcon } from "lucide-react";
 import PaperForm from "@/components/paperForm";
 import ResearchPaper from "@/components/ResearchPaper";
-
-// Define the ResearchPaper type
 interface ResearchPaper {
-  id: number; // or string based on your API
+  id: number;
   paperName: string;
   authorName: string;
   views: number;
@@ -26,24 +24,21 @@ interface ResearchPaper {
   numberOfComments: number;
   description: string;
   comments: Array<any>;
+  onLike: (id: number) => void;
+  onDislike: (id: number) => void;
 }
-
 export default function Home() {
-  // const [papers, setPapers] = useState<ResearchPaper[]>([]);
-  const { papers,setPapers } = useResearchPaper();
+  const [papers, setPapers] = useState<ResearchPaper[]>([]);
+  // const { papers,setPapers } = useResearchPaper();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const socket: Socket = io("http://localhost:5000");
-
+  const socket = io("ws://localhost:8000");
   useEffect(() => {
     const fetchPapers = async () => {
       try {
-        const response = await fetch(
-          "https://r4b85zv7-8000.inc1.devtunnels.ms/api/v1/researchPaper",
-          {
-            method: "GET",
-          }
-        );
+        const response = await fetch("http://localhost:8000/api/v1/paper", {
+          method: "GET",
+        });
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }
@@ -55,37 +50,49 @@ export default function Home() {
         setLoading(false);
       }
     };
-
     fetchPapers();
-
     // Set up the socket listener
-    const handlePaperUpdated = (updatedPaper: ResearchPaper) => {
-      setPapers((prevPapers) =>
-        prevPapers.map((paper) =>
-          paper.id === updatedPaper.id ? updatedPaper : paper
-        )
-      );
+    const handleNewPaperCreated = (newPaper: ResearchPaper) => {
+      // console.log("hi chrome");
+      setPapers((prevPapers) => {
+        const paperExists = prevPapers.some(
+          (paper) => paper.id === newPaper.id
+        );
+        if (paperExists) {
+          return prevPapers.map((paper) =>
+            paper.id === newPaper.id ? newPaper : paper
+          );
+        } else {
+          return [...prevPapers, newPaper]; // Add new paper to the list
+        }
+      });
+      fetchPapers();
+    };
+    const handleNewPaperCreatedtrue = (newPaper: ResearchPaper) => {
+      fetchPapers();
     };
 
-    socket.on("PaperUpdated", handlePaperUpdated);
-
-    // Cleanup function
+    socket.on("NewPaperCreated", handleNewPaperCreatedtrue);
+    // socket.on("PaperLiked", handleLike);
+    // socket.on("PaperDisliked", handleDislike);
+    socket.on("postupdated", handleNewPaperCreated);
     return () => {
-      socket.off("PaperUpdated", handlePaperUpdated);
+      socket.off("NewPaperCreated");
+      socket.off("postupdated");
+      // socket.off("LikeUpdate", handleLike);
+      // socket.off("DislikeUpdate", handleDislike);
     };
-  }, [papers]);
+  }, []);
 
   const handleLike = (paperId: number) => {
-    socket.emit("likePost", paperId);
+    socket.emit("likePaper", paperId.toString());
   };
 
   const handleDislike = (paperId: number) => {
-    socket.emit("dislikePost", paperId);
+    socket.emit("dislikePaper", paperId.toString());
   };
-
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
-
   const renderPapers = () => {
     return papers.map((paper) => (
       <ResearchPaper
@@ -98,8 +105,8 @@ export default function Home() {
         dislikes={paper.dislikes}
         numberOfComments={paper.comments.length}
         description={paper.description}
-        onLike={() => handleLike(paper.id)} // Pass down like handler
-        onDislike={() => handleDislike(paper.id)}// Pass down dislike handler
+        onLike={handleLike}
+        onDislike={handleDislike}
       />
     ));
   };
@@ -107,12 +114,15 @@ export default function Home() {
   return (
     <div className="w-full">
       <div>
-        <h1 className="text-center m-5">Conference Papers</h1>
+        <h1 className="text-center text-3xl m-5">Conference Papers</h1>
 
-        <div className="flex justify-center p-4 sm:justify-end">
+        <div className="flex flex-row fixed bottom-10 right-10">
           <Dialog>
             <DialogTrigger asChild>
-              <Button>Create paper</Button>
+              <Button className="gap-4 px-8 py-8 rounded-2xl">
+                <PenIcon size={16} />
+                Create paper
+              </Button>
             </DialogTrigger>
             <DialogContent>
               <DialogHeader>
