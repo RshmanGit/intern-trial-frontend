@@ -38,7 +38,6 @@ const PaperForm = () => {
       console.error("Error:", error);
     } finally {
       setFormData({ authorName: "",paperName: "" ,description:""});
-      setFormData({ authorName: "",paperName: "" ,description:""});
       setIsSubmitting(false); // Reset submitting state
     }
   };

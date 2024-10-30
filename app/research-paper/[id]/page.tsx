@@ -73,7 +73,7 @@ const Page = ({ params }: { params: { id: string } }) => {
   };
 
   return (
-    <div className="flex flex-col items-center  h-full">
+    <div className="flex flex-col items-center h-screen">
       <div className="flex flex-col gap-4 w-4/5 sm:w-2/3 bg-white p-5 shadow h-full">
         <div className='flex flex-col gap-2'>
           <h2 className="text-lg md:text-4xl font-semibold">{paper.title}</h2>

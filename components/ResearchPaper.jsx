@@ -5,7 +5,7 @@ import {
   ThumbsDownIcon,
   ThumbsUpIcon,
   EyeIcon,
-  MessageSquareCode,
+  MessageCircleMore,
 } from "lucide-react";
 import {
   Card,
@@ -16,13 +16,6 @@ import {
 import { Button } from "./ui/button";
 import Link from "next/link";
 
-import EngagementPanel from "./EngagementPanel";
-import {
-  ThumbsUpIcon,
-  ThumbsDownIcon,
-  MessageCircleMoreIcon,
-  Eye,
-} from "lucide-react";
 
 const ResearchPaper = ({  id,
   title,
@@ -36,51 +29,55 @@ const ResearchPaper = ({  id,
   onDislike,}) => {
   return (
     <>
-      <Card className="m-5 p-4 shadow-lg rounded-lg bg-white hover:custom-blue-shadow transition-shadow duration-300 max-w-[60%] mx-auto">
+      <Card className="m-5 p-4 shadow-sm rounded-lg bg-white ">
         <Link href={`/research-paper/${id}`}>
           <CardHeader>
-          <h2>
-            Score: <strong>{2 * likes - dislikes}</strong>
-          </h2>
+          
+            
+          
             <h2 className="text-lg md:text-xl font-semibold line-clamp-3">{title}</h2>{" "}
+            <p className="text-sm italic text-gray-500">
+              {author}
+              {/* Using author prop */}
+            </p>{" "}
           </CardHeader>
           <CardContent>
             <p className="text-sm text-gray-600 line-clamp-2">{description}</p>{" "}
           </CardContent>
         </Link>
         <CardFooter>
-          <div>
-          <div className="grid grid-cols-2  gap-4 sm:flex flex-row justify-between mt-4 w-full sm:w-auto">
+        <div className="flex gap-2 flex-wrap md:justify-between">
       <Button
+      onClick={()=>{onLike(id)}}
         size={"icon"}
         variant={"ghost"}
         className={`gap-1 transform transition-transform duration-200 hover:scale-125`}
       >
         <ThumbsUpIcon size={16} />
-        {paper.likes}
+        {likes}
       </Button>
       <Button
+      onClick={()=>{onDislike(id)}}
         size={"icon"}
         variant={"ghost"}
         className={`gap-1 transform transition-transform duration-200 hover:scale-125`}
       >
         <ThumbsDownIcon size={16} />
-        {paper.dislikes}
+        {dislikes}
       </Button>
       <Button
         size={"icon"}
         variant={"ghost"}
         className="transform transition-transform duration-200 hover:scale-125 "
       >
-        <MessageCircleMoreIcon size={16} />
-        {paper.comments}
+        <MessageCircleMore size={16} />
+        {numberOfComments}
       </Button>
       <div className="self-center flex items-center gap-1 text-sm">
-        <Eye size={16} />
-        {paper.views}
+        <EyeIcon size={16} />
+        {views}
       </div>
     </div>
-          </div>
           
         </CardFooter>
       </Card>

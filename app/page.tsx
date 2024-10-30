@@ -17,7 +17,7 @@ import ResearchPaper from "@/components/ResearchPaper";
 
 // Define the ResearchPaper type
 interface ResearchPaper {
-  id: number;
+  id: string;
   paperName: string;
   authorName: string;
   views: number;
@@ -85,19 +85,20 @@ export default function Home() {
     };
   }, []);
 
-  const handleLike = (paperId: number) => {
-    socket.emit("likePaper", paperId.toString());
+  const handleLike = (paperId: string) => {
+    socket.emit("likePaper", paperId);
   };
 
-  const handleDislike = (paperId: number) => {
-    socket.emit("dislikePaper", paperId.toString());
+  const handleDislike = (paperId: string) => {
+    socket.emit("dislikePaper", paperId);
   };
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
   const renderPapers = () => {
     return papers.map((paper) => (
+      <div key={paper.id} className="sm:w-2/3 w-3/4 self-center">
+
       <ResearchPaper
-        key={paper.id}
         id={paper.id}
         title={paper.paperName}
         author={paper.authorName}
@@ -108,7 +109,8 @@ export default function Home() {
         description={paper.description}
         onLike={handleLike}
         onDislike={handleDislike}
-      />
+        />
+        </div>
     ));
   };
 
@@ -122,8 +124,8 @@ export default function Home() {
             <Dialog>
               <DialogTrigger asChild>
                 <Button className="gap-4 px-8 py-8 rounded-2xl">
+                  <PenIcon size={16}/>
                 Create paper
-                  <PenIcon size={16} className="gap-4 px-8 py-8 rounded-2xl"/>
               </Button>
               </DialogTrigger>
               <DialogContent>
@@ -138,7 +140,7 @@ export default function Home() {
           </div>
         </div>
       </div>
-      <div className="flex flex-col gap-6">{renderPapers()}</div>
+      <div className="flex flex-col gap-3">{renderPapers()}</div>
     </div>
   );
 }
