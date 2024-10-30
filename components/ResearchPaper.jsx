@@ -5,8 +5,15 @@ import {
   CardFooter,
   CardHeader,
 } from "@/components/ui/card";
+import { Button } from "./ui/button";
 import Link from "next/link";
 import EngagementPanel from "./EngagementPanel";
+import {
+  ThumbsUpIcon,
+  ThumbsDownIcon,
+  MessageCircleMoreIcon,
+  Eye,
+} from "lucide-react";
 
 const ResearchPaper = (paper) => {
   return (
@@ -31,12 +38,39 @@ const ResearchPaper = (paper) => {
           </CardContent>
         </Link>
         <CardFooter>
-          <EngagementPanel
-            views={paper.views}
-            likes={paper.likes}
-            dislikes={paper.dislikes}
-            comments={paper.comments}
-          />
+          <div>
+          <div className="flex gap-2 items-center">
+      <Button
+        size={"icon"}
+        variant={"ghost"}
+        className={`gap-1 transform transition-transform duration-200 hover:scale-125`}
+      >
+        <ThumbsUpIcon size={16} />
+        {paper.likes}
+      </Button>
+      <Button
+        size={"icon"}
+        variant={"ghost"}
+        className={`gap-1 transform transition-transform duration-200 hover:scale-125`}
+      >
+        <ThumbsDownIcon size={16} />
+        {paper.dislikes}
+      </Button>
+      <Button
+        size={"icon"}
+        variant={"ghost"}
+        className="gap-1 transform transition-transform duration-200 hover:scale-125"
+      >
+        <MessageCircleMoreIcon size={16} />
+        {paper.comments}
+      </Button>
+      <div className="self-center flex items-center gap-1 text-sm">
+        <Eye size={16} />
+        {paper.views}
+      </div>
+    </div>
+          </div>
+          
         </CardFooter>
       </Card>
     </>

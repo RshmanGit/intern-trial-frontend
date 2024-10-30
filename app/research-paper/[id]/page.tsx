@@ -2,12 +2,11 @@
 import React, { useEffect, useState } from 'react';
 import { io, Socket } from "socket.io-client";
 import { useResearchPaper } from '@/app/ResearchPaperContext';
-import ButtonGroup from '@/components/ButtonGroup';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import CommentForm from '@/components/CommentFrom';
-import { Card, CardContent, CardHeader, CardFooter } from '@/components/ui/card';
-import EngagementPanel from '@/components/EngagementPanel';
+import { ThumbsUpIcon, ThumbsDownIcon, MessageCircleMoreIcon, Eye } from 'lucide-react';
+// import { Button } from "./ui/button";
 type Engagements= {
   views: number;
   likes: number;
@@ -62,14 +61,35 @@ const Page = ({ params }: { params: { id: string } }) => {
           <p className="text-gray-800 text-lg mb-4 m-5 text-pretty">{paper.description}</p>
           
         </div>
-          <EngagementPanel
-            views={paper.views}
-            likes={paper.likes}
-            dislikes={paper.dislikes}
-            comments={paper.comments.length}
-            onLike={() => handleLike(paper.id)}
-            onDislike={() => handleDislike(paper.id)}
-          />
+        <div className="flex gap-2 items-center">
+      <Button size={"sm"}
+        variant={"ghost"}
+        className={`gap-1 transform transition-transform duration-200 hover:scale-125`}
+      >
+        <ThumbsUpIcon size={16} />
+        {paper.likes}
+      </Button>
+      <Button
+        size={"sm"}
+        variant={"ghost"}
+        className={`gap-1 transform transition-transform duration-200 hover:scale-125`}
+      >
+        <ThumbsDownIcon size={16} />
+        {paper.dislikes}
+      </Button>
+      <Button
+        size={"sm"}
+        variant={"ghost"}
+        className="gap-1 transform transition-transform duration-200 hover:scale-125"
+      >
+        <MessageCircleMoreIcon size={16} />
+        {paper.comments.length}
+      </Button>
+      <div className="self-center flex items-center gap-1 text-sm">
+        <Eye size={16} />
+        {paper.views}
+      </div>
+    </div>
           <div>
             <div className='text-md'>Comments : {paper.comments.length}</div>
             {paper.comments.map((comment,idx) => (

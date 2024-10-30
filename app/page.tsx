@@ -85,7 +85,7 @@ export default function Home() {
   };
 
   return (
-    <div className="w-full m-5">
+    <div className="w-full">
       <div>
         <h1 className="text-center text-3xl m-5">What&apos;s HOT</h1>
 
