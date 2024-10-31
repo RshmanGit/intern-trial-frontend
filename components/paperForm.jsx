@@ -19,7 +19,7 @@ const PaperForm = () => {
     e.preventDefault(); // Prevent default form submission
     setIsSubmitting(true); // Set submitting state
     try {
-      const response = await fetch("http://localhost:8000/api/v1/paper", {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/paper`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -4,26 +4,17 @@ import { toast } from "sonner";
 import {
   ThumbsDownIcon,
   ThumbsUpIcon,
-  EyeIcon,
-  MessageSquareCode,
+  Eye,
+  MessageCircleMore,
+  Flame
 } from "lucide-react";
 import {
   Card,
   CardContent,
-  CardDescription,
   CardFooter,
   CardHeader,
 } from "@/components/ui/card";
 import { Button } from "./ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import CommentForm from "./CommentFrom";
 import Link from "next/link";
 const ResearchPaper = ({
   id,
@@ -42,25 +33,22 @@ const ResearchPaper = ({
       <Card className="m-5 p-4 shadow-lg rounded-lg bg-white hover:custom-blue-shadow transition-shadow duration-300 max-w-[60%] mx-auto">
         <Link href={`/research-paper/${id}`}>
           <CardHeader>
-          <h2>
-            Score: <strong>{2 * likes - dislikes}</strong>
-          </h2>
-            <h2 className="text-lg md:text-xl font-semibold line-clamp-3">{title}</h2>{" "}
+            <h2 className="text-lg md:text-xl font-semibold line-clamp-3">{title}</h2>
+            <p className="text-sm italic text-gray-500">
+              {author}
+            </p>
           </CardHeader>
           <CardContent>
             <p className="text-sm text-gray-600 line-clamp-2">{description}</p>{" "}
           </CardContent>
         </Link>
-        <div>
           <CardFooter>
-            <p className="text-sm italic text-gray-500 flex-1"> -{author} </p>{" "}
-          </CardFooter>
-        </div>
         <div className="flex flex-col gap-4 md:flex-row md:justify-between mt-4">
           <div className="grid grid-cols-2  gap-4 sm:flex flex-row justify-between mt-4 w-full sm:w-auto">
             <Button
+              size={"icon"}
               variant={"ghost"}
-              className="flex border border-black mb-4 md:mb-0 transform transition-transform duration-200 hover:scale-125"
+              className={`gap-1 transform transition-transform duration-200 hover:scale-125`}
               onClick={() => {
                 onLike(id);
                 toast.info("You liked!", {
@@ -70,13 +58,12 @@ const ResearchPaper = ({
               }}
             >
               <ThumbsUpIcon size={16} />
-              <span className="ml-1">{likes}</span> {/* Display the count */}
+              <span className="ml-1">{likes}</span>
             </Button>
-
-            {/* Thumbs Down Button */}
             <Button
+              size={"icon"}
               variant={"ghost"}
-              className="flex border border-black mb-4 md:mb-0 transform transition-transform duration-200 hover:scale-125"
+              className={`gap-1 transform transition-transform duration-200 hover:scale-125`}
               onClick={() => {
                 onDislike(id);
                 toast.info("you disliked!", {
@@ -88,28 +75,34 @@ const ResearchPaper = ({
               <ThumbsDownIcon size={16} />
               <span className="ml-1">{dislikes}</span> {/* Display the count */}
             </Button>
-
-            {/* views Button */}
             <Button
+              size={"icon"}
               variant={"ghost"}
-              className="flex border border-black mb-4 md:mb-0 transform transition-transform duration-200 hover:scale-125"
+              className={`gap-1 transform transition-transform duration-200 hover:scale-125`}
             >
-              <EyeIcon size={16} />
+              <Eye size={16} />
               <span className="ml-1">{views}</span>
-              {/* Display the comment count */}
             </Button>
-
-            {/* Comments Button */}
             <Button
+              size={"icon"}
               variant={"ghost"}
-              className="flex border border-black mb-4 md:mb-0 transform transition-transform duration-200 hover:scale-125"
+              className={`gap-1 transform transition-transform duration-200 hover:scale-125`}
             >
-              <MessageSquareCode size={16} />
-              <span className="ml-1">{numberOfComments}</span>{" "}
-              {/* Display the comment count */}
+              <MessageCircleMore size={16} />
+              <span className="ml-1">{numberOfComments}</span>
             </Button>
+            <Button
+              size={"icon"}
+              variant={"ghost"}
+              className={`gap-1 transform transition-transform duration-200 hover:scale-125`}
+            >
+              <Flame size={16} />
+              <div>{likes-dislikes+numberOfComments}</div>
+            </Button>
+            
           </div>
         </div>
+        </CardFooter>
       </Card>
     </>
   );
