@@ -21,6 +21,6 @@
       "@/*": ["./*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "components/CommentCard.jsx", "components/ResearchPaper.jsx", "components/CommentFrom.jsx", "components/paperForm.jsx"],
   "exclude": ["node_modules"]
 }
